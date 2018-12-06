@@ -5,6 +5,7 @@ import arrow
 import boto3
 import sniffer
 
+# Get Latest Blog Information
 def get_latest_block_info():
     response = {}
     r = requests.get('https://blockchain.info/latestblock')
@@ -14,6 +15,7 @@ def get_latest_block_info():
     response['block_index'] = r['block_index']
     return response
 
+# Get information about Previous block
 def get_single_block(block_hash):
     response = {}
     r = requests.get('https://blockchain.info/rawblock/' + str(block_hash))
@@ -25,6 +27,7 @@ def get_single_block(block_hash):
     response['time'] = r['time']
     return response
 
+# Get balance associated with address
 def get_balance(address):
     response = {}
     r = requests.get('https://blockchain.info/balance?active=' + str(address))
@@ -34,6 +37,7 @@ def get_balance(address):
     response['total_received'] = r[address]['total_received']
     return response
     
+# Get bitcoin Amount in USD
 def get_amount_in_usd():
     response = {}
     r = requests.get('https://blockchain.info/ticker')
@@ -43,10 +47,12 @@ def get_amount_in_usd():
     response['sell'] = r['USD']['sell']
     return response
 
+# USD to Bitcoin Calculator
 def convert_usd_to_btc(amount):
     response = requests.get('https://blockchain.info/tobtc?currency=USD&value=' + str(amount))
     return response.text
 
+# Get single transaction from DynamoDB
 def fetch_transaction(tx_hash):
     dynamodb = boto3.client('dynamodb',region_name='us-west-1')
     response = dynamodb.get_item(TableName='transaction', Key={'tx_hash':{'S':str(tx_hash)}})
@@ -55,6 +61,7 @@ def fetch_transaction(tx_hash):
     else:
         return "The Transaction not in the Database"
 
+# Get recent transaction from Database fro UI.
 def fetch_recent_transaction():
     temp_list = []
     temp_single_list = []

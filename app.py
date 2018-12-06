@@ -5,110 +5,19 @@ from sqlalchemy.orm import sessionmaker
 from tabledef import *
 import fetch_data
 engine = create_engine('sqlite:///tutorial.db', echo=True)
- 
 app = Flask(__name__)
-temp_list = fetch_data.fetch_recent_transaction()
-posts = []
-for item in temp_list:
-	temp_dict = {'transactionHash':item[0],'timestamp':item[2],'BTC':item[1]}
-	posts.append[temp_dict]
-
-'''
-posts = [
-	{
-		'transactionHash':'288da69e778b2afd3882d3dcfc70bbfb7aaf5fb95a2afbea14f35814ee2f21ac',
-		'age': '3 seconds',
-		'btc': '0.03229882 BTC'
-	},
-	{
-		'transactionHash':'765f0a17a75626ec4892301733cd0578ca36408a680af8fe029a4bdae0ea45ad',
-		'age': '2 seconds',
-		'btc': '0.95238070 BTC'
-	},
-	{
-		'transactionHash':'138497bdafcabb44f727a0ff23ac676b7f0ad25a52abc16fd6190536105b115c',
-		'age': '4 seconds',
-		'btc': '5.088 BTC'
-	},
-	{
-		'transactionHash':'1d44ffb397c96688571f1ea1eee2803ffcef6e95b1d4b8a22bd964069a48c226',
-		'age': '5 seconds',
-		'btc': '0.1729882 BTC',
-		'usd': '6191.24'
-	},
-	{
-		'transactionHash':'20aef5e25859038f40dd6f3713b02ed250ff80c7bf248276483c35db74173f16',
-		'age': '6 seconds',
-		'btc': '0.03229882 BTC',
-		'usd': '3408.12'
-	},
-	{
-		'transactionHash':'288da69e778b2afd3882d3dcfc70bbfb7aaf5fb95a2afbea14f35814ee2f21ac',
-		'age': '3 seconds',
-		'btc': '0.03229882 BTC',
-		'usd': '1624.56'
-	},
-	{
-		'transactionHash':'765f0a17a75626ec4892301733cd0578ca36408a680af8fe029a4bdae0ea45ad',
-		'age': '2 seconds',
-		'btc': '0.95238070 BTC',
-		'usd': '3887.56'
-	},
-	{
-		'transactionHash':'138497bdafcabb44f727a0ff23ac676b7f0ad25a52abc16fd6190536105b115c',
-		'age': '4 seconds',
-		'btc': '5.088 BTC',
-		'usd': '4047.38'
-	},
-	{
-		'transactionHash':'1d44ffb397c96688571f1ea1eee2803ffcef6e95b1d4b8a22bd964069a48c226',
-		'age': '5 seconds',
-		'btc': '0.1729882 BTC',
-		'usd': '6191.24'
-	},
-	{
-		'transactionHash':'20aef5e25859038f40dd6f3713b02ed250ff80c7bf248276483c35db74173f16',
-		'age': '6 seconds',
-		'btc': '0.03229882 BTC',
-		'usd': '3408.12'
-	},
-	{
-		'transactionHash':'288da69e778b2afd3882d3dcfc70bbfb7aaf5fb95a2afbea14f35814ee2f21ac',
-		'age': '3 seconds',
-		'btc': '0.03229882 BTC',
-		'usd': '1624.56'
-	},
-	{
-		'transactionHash':'765f0a17a75626ec4892301733cd0578ca36408a680af8fe029a4bdae0ea45ad',
-		'age': '2 seconds',
-		'btc': '0.95238070 BTC',
-		'usd': '3887.56'
-	},
-	{
-		'transactionHash':'138497bdafcabb44f727a0ff23ac676b7f0ad25a52abc16fd6190536105b115c',
-		'age': '4 seconds',
-		'btc': '5.088 BTC',
-		'usd': '4047.38'
-	},
-	{
-		'transactionHash':'1d44ffb397c96688571f1ea1eee2803ffcef6e95b1d4b8a22bd964069a48c226',
-		'age': '5 seconds',
-		'btc': '0.1729882 BTC',
-		'usd': '6191.24'
-	},
-	{
-		'transactionHash':'20aef5e25859038f40dd6f3713b02ed250ff80c7bf248276483c35db74173f16',
-		'age': '6 seconds',
-		'btc': '0.03229882 BTC',
-		'usd': '3408.12'
-	}
-]
-'''
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['DEBUG'] = True
 @app.route('/')
 def home():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
+        posts = []
+        temp_list = fetch_data.fetch_recent_transaction()    
+        for item in temp_list:
+            temp_dict = {'transactionHash':str(item[0]),'age':str(item[2]),'btc':str(item[1]),'usd': '6191.24'}
+            posts.append(temp_dict)
         return render_template('home.html', posts=posts)
  
 @app.route('/login', methods=['POST'])
@@ -127,9 +36,14 @@ def do_admin_login():
         flash('wrong password!')
     return home()
 
-@app.route('/home', methods=['GET','POST'])
+@app.route('/home', methods=['GET'])
 def home1():
-    return render_template('home.html',posts=posts)
+        posts = []
+        temp_list = fetch_data.fetch_recent_transaction()    
+        for item in temp_list:
+            temp_dict = {'transactionHash':str(item[0]),'age':str(item[2]),'btc':str(item[1]),'usd': '6191.24'}
+            posts.append(temp_dict)
+        return render_template('home.html',posts=posts)
  
 @app.route("/logout", methods=['GET','POST'])
 def logout():
