@@ -3,28 +3,32 @@ from flask import Flask, flash, redirect, render_template, request, session, abo
 import os
 from sqlalchemy.orm import sessionmaker
 from tabledef import *
+import fetch_data
 engine = create_engine('sqlite:///tutorial.db', echo=True)
  
 app = Flask(__name__)
- 
+temp_list = fetch_data.fetch_recent_transaction()
+posts = []
+for item in temp_list:
+	temp_dict = {'transactionHash':item[0],'timestamp':item[2],'BTC':item[1]}
+	posts.append[temp_dict]
+
+'''
 posts = [
 	{
 		'transactionHash':'288da69e778b2afd3882d3dcfc70bbfb7aaf5fb95a2afbea14f35814ee2f21ac',
 		'age': '3 seconds',
-		'btc': '0.03229882 BTC',
-		'usd': '1624.56'
+		'btc': '0.03229882 BTC'
 	},
 	{
 		'transactionHash':'765f0a17a75626ec4892301733cd0578ca36408a680af8fe029a4bdae0ea45ad',
 		'age': '2 seconds',
-		'btc': '0.95238070 BTC',
-		'usd': '3887.56'
+		'btc': '0.95238070 BTC'
 	},
 	{
 		'transactionHash':'138497bdafcabb44f727a0ff23ac676b7f0ad25a52abc16fd6190536105b115c',
 		'age': '4 seconds',
-		'btc': '5.088 BTC',
-		'usd': '4047.38'
+		'btc': '5.088 BTC'
 	},
 	{
 		'transactionHash':'1d44ffb397c96688571f1ea1eee2803ffcef6e95b1d4b8a22bd964069a48c226',
@@ -99,7 +103,7 @@ posts = [
 		'usd': '3408.12'
 	}
 ]
-
+'''
 @app.route('/')
 def home():
     if not session.get('logged_in'):
