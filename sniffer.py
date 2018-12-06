@@ -23,11 +23,14 @@ import hashlib
 import key_to_address
 import update_tx_to_dynamodb
 import time
+from collections import deque
 
 SNIFFER_VERSION = "0.0.2"
 
 MY_VERSION = 312
 MY_SUBVERSION = ".4"
+transactions_hash = deque(maxlen=15)
+
 # count = 0
 
 # Default Settings if no configuration file is given
@@ -44,9 +47,8 @@ def new_block_event(block):
     else:
         print "\n - Invalid Block: %s" % block.hash 
 
-
 def new_transaction_event(tx):
-
+    global transactions_hash
     if tx.is_valid():
         tx_dict = {}
         # print("******************************")
@@ -65,15 +67,14 @@ def new_transaction_event(tx):
                 tx_dict['txout'][txout.address] = float(txout.amount)
         tx_dict['total_value'] = total_value
         tx_dict['timestamp'] = time.time()
-        # print tx_dict['timestamp']
+        transactions_hash.append([tx.hash,total_value,str(tx_dict['timestamp'])])
         update_tx_to_dynamodb.dynamodb_transaction_hash_update(tx_dict)
         update_tx_to_dynamodb.dynamodb_transaction_update(tx_dict)
-        # print tx_dict
+        update_tx_to_dynamodb.bitcoin_recent_transaction(list(transactions_hash))
 
 
 def sha256(s):
     return hashlib.new('sha256', s).digest()
-
 
 def hash256(s):
     return sha256(sha256(s))

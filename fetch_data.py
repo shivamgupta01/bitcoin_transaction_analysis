@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 import arrow
 import boto3
+import sniffer
 
 def get_latest_block_info():
     response = {}
@@ -54,9 +55,11 @@ def fetch_transaction(tx_hash):
     else:
         return "The Transaction not in the Database"
 
+def fetch_recent_transaction():
+    return sniffer.return_recent_transaction_hash()
+    
 
-
-
+print fetch_recent_transaction()
 
 
 
@@ -67,5 +70,4 @@ def fetch_transaction(tx_hash):
 # print get_balance('14Bag7dawf3v78hnQf4XKKd1nVAzY27pdf')
 # print get_amount_in_usd()
 # print convert_usd_to_btc(500)
-
-print fetch_transaction('010690d5372594e88914968bb003c4cf33424b75f8a7d3355d7d966b6daf69e')
+# print fetch_transaction('010690d5372594e88914968bb003c4cf33424b75f8a7d3355d7d966b6daf69e')
