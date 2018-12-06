@@ -56,10 +56,21 @@ def fetch_transaction(tx_hash):
         return "The Transaction not in the Database"
 
 def fetch_recent_transaction():
-    return sniffer.return_recent_transaction_hash()
-    
+    temp_list = []
+    temp_single_list = []
+    dynamodb = boto3.client('dynamodb',region_name='us-west-1')
+    response = dynamodb.get_item(TableName='recent_transaction', Key={'recent_transaction':{'S':"recent_transaction"}})
+    temp =  response['Item']['trasactions']['S'].replace("]","").replace("[","").split(",")
+    i = 0
+    for item in temp:
+        temp_single_list.append(item)
+        i = i + 1
+        if i % 3 == 0:
+            temp_list.append(temp_single_list)
+            temp_single_list = []
+    return temp_list
 
-print fetch_recent_transaction()
+
 
 
 
@@ -71,3 +82,4 @@ print fetch_recent_transaction()
 # print get_amount_in_usd()
 # print convert_usd_to_btc(500)
 # print fetch_transaction('010690d5372594e88914968bb003c4cf33424b75f8a7d3355d7d966b6daf69e')
+# print fetch_recent_transaction()
