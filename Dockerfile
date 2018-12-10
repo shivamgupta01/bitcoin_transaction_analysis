@@ -1,4 +1,4 @@
-From python:2.7.13-alpine
+FROM python:2.7.13-alpine
 
 RUN apk update &&\
     apk add git
@@ -11,10 +11,13 @@ RUN pip install boto3 &&\
     pip install arrow &&\
     pip install sqlalchemy &&\
     pip install flask &&\
-    pip install requests
+    pip install requests &&\
+    pip install github_webhook
 
 ENTRYPOINT python app.py
 
+# Docker Build command:
+# docker build --no-cache -t bitcoin_transaction_analysis .
 
 # Docker Run command:
-# docker run --rm -it -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KE$AWS_SECRET_ACCESS_KEY -p 4000:4000 a238be455008
+# docker run --rm -it -p 4000:4000 -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY bitcoin_transaction_analysis
