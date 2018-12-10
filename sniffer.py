@@ -71,6 +71,7 @@ def new_transaction_event(tx):
         update_tx_to_dynamodb.dynamodb_transaction_hash_update(tx_dict)
         update_tx_to_dynamodb.dynamodb_transaction_update(tx_dict)
         update_tx_to_dynamodb.bitcoin_recent_transaction(list(transactions_hash))
+        print tx_dict
 
 
 def sha256(s):
