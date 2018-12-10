@@ -36,7 +36,7 @@ def do_admin_login():
         flash('wrong password!')
     return home()
 
-@app.route('/home', methods=['GET'])
+@app.route('/home', methods=['GET','POST'])
 def home1():
         posts = []
         temp_list = fetch_data.fetch_recent_transaction()    
