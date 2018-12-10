@@ -16,7 +16,7 @@ def home():
         posts = []
         temp_list = fetch_data.fetch_recent_transaction()    
         for item in temp_list:
-            temp_dict = {'transactionHash':str(item[0]),'age':str(item[2]),'btc':str(item[1]),'usd': '6191.24'}
+            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': '6191.24'}
             posts.append(temp_dict)
         return render_template('home.html', posts=posts)
  
@@ -41,14 +41,49 @@ def home1():
         posts = []
         temp_list = fetch_data.fetch_recent_transaction()    
         for item in temp_list:
-            temp_dict = {'transactionHash':str(item[0]),'age':str(item[2]),'btc':str(item[1]),'usd': '6191.24'}
+            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': '6191.24'}
             posts.append(temp_dict)
         return render_template('home.html',posts=posts)
+
+@app.route('/transaction', methods=['GET','POST'])
+def transaction():
+        posts = []
+        temp_list = fetch_data.fetch_recent_transaction()    
+        for item in temp_list:
+            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': '6191.24'}
+            posts.append(temp_dict)
+        return render_template('transactionPage.html',posts=posts)
+
+@app.route('/transaction1', methods=['GET','POST'])
+def transaction1():
+        posts = []
+        temp_list = fetch_data.fetch_recent_transaction()    
+        for item in temp_list:
+            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': '6191.24'}
+            posts.append(temp_dict)
+        return render_template('transaction1.html',posts=posts)
+
+@app.route('/transactionDetails', methods=['GET','POST'])
+def transactionDetails():
+    return render_template('transactionDetails.html')
+
+@app.route("/getAmount", methods=['GET','POST'])
+def getAmount():
+	res = fetch_data.convert_usd_to_btc(request.form['transactionId'])
+	return res
+
+@app.route("/fetchTransaction", methods=['GET','POST'])
+def fetchTransaction():
+	val = fetch_data.fetch_transaction(request.form['transactionHashId'])
+	#print val
+	return str(val)
+	
  
 @app.route("/logout", methods=['GET','POST'])
 def logout():
     session['logged_in'] = False
     return home()
+
  
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
