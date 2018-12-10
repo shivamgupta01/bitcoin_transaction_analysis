@@ -45,7 +45,7 @@ def home1():
         posts = []
         temp_list = fetch_data.fetch_recent_transaction()    
         for item in temp_list:
-            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': '6191.24'}
+            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': fetch_data.convert_usd_to_btc(item[1])}
             posts.append(temp_dict)
         return render_template('home.html',posts=posts)
 
@@ -54,7 +54,7 @@ def transaction():
         posts = []
         temp_list = fetch_data.fetch_recent_transaction()    
         for item in temp_list:
-            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': '6191.24'}
+            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': fetch_data.convert_usd_to_btc(item[1])}
             posts.append(temp_dict)
         return render_template('transactionPage.html',posts=posts)
 
@@ -63,7 +63,7 @@ def transaction1():
         posts = []
         temp_list = fetch_data.fetch_recent_transaction()    
         for item in temp_list:
-            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': '6191.24'}
+            temp_dict = {'transactionHash':str(item[0]),'age':item[2],'btc':str(item[1]),'usd': fetch_data.convert_usd_to_btc(item[1])}
             posts.append(temp_dict)
         return render_template('transaction1.html',posts=posts)
 
