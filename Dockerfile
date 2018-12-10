@@ -1,16 +1,20 @@
-From sabbir1cse/ubuntu-python-pip-supervisor
-RUN apt-get update &&\
-    apt-get install curl -y &&\
-    apt-get install git -y &&\
-    apt-get install python2.7 -y &&\
-    curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py" &&\
-    python get-pip.py &&\
-    pip3 install --upgrade pip
+From python:2.7.13-alpine
+
+RUN apk update &&\
+    apk add git
+
+RUN git clone https://github.com/shivamgupta01/bitcoin_transaction_analysis.git
+WORKDIR /bitcoin_transaction_analysis
+RUN chmod +x sniffer.py
 RUN pip install boto3 &&\
     pip install base58 &&\
     pip install arrow &&\
     pip install sqlalchemy &&\
-    pip install flask
-RUN git clone https://github.com/shivamgupta01/bitcoin_transaction_analysis.git
-RUN ./sniffer.py
+    pip install flask &&\
+    pip install requests
+
 ENTRYPOINT python app.py
+
+
+# Docker Run command:
+# docker run --rm -it -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KE$AWS_SECRET_ACCESS_KEY -p 4000:4000 a238be455008
