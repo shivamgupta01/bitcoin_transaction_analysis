@@ -6,7 +6,8 @@ from tabledef import *
 import fetch_data
 import os
 
-os.system('./sniffer.py')
+
+os.system('python sniffer.py')
 engine = create_engine('sqlite:///tutorial.db', echo=True)
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True

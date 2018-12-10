@@ -13,7 +13,8 @@ RUN pip install boto3 &&\
     pip install flask &&\
     pip install requests &&\
     pip install github_webhook
-
+    
+WORKDIR /bitcoin_transaction_analysis
 ENTRYPOINT python app.py
 
 # Docker Build command:
